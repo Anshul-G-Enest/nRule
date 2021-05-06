@@ -40,6 +40,7 @@ namespace Rule.WebAPI.Model.DTO
     public class CountryRequestModel : IRuleRequest
     {
         public List<string> EuCountry { get; set; }
+        public string Name { get; set; }
     }
 
     public class TripRequestModel: IRuleRequest
