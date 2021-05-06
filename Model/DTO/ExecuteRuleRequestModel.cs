@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Rule.WebAPI.Model.DTO
 {
@@ -10,8 +11,7 @@ namespace Rule.WebAPI.Model.DTO
         //    MyRule = ruleRequest;
         //}
 
-        public IRuleRequest MyRule { get; set; }
-
+        //public IRuleRequest MyRule { get; set; }
 
         public PersonRequestModel Person { get; set; }
         public AirportRequestModel Airport { get; set; }
@@ -20,9 +20,8 @@ namespace Rule.WebAPI.Model.DTO
         public AircraftRequestModel Aircraft { get; set; }
     }
 
-    public interface IRuleRequest { }
 
-    public class PersonRequestModel : IRuleRequest
+    public class PersonRequestModel 
     {
         public int Id { get; set; }
         public DateTime BirthDate { get; set; }
@@ -31,19 +30,20 @@ namespace Rule.WebAPI.Model.DTO
         public bool IsMale { get; set; }
     }
 
-    public class AirportRequestModel : IRuleRequest
+    public class AirportRequestModel 
     {
         public bool AirportofEntry { get; set; }
         public bool MilitaryAirport { get; set; }
     }
 
-    public class CountryRequestModel : IRuleRequest
+    public class CountryRequestModel 
     {
+        public int Id { get; set; }
         public List<string> EuCountry { get; set; }
         public string Name { get; set; }
     }
 
-    public class TripRequestModel: IRuleRequest
+    public class TripRequestModel
     {
         public List<string> ArrivalAirport { get; set; }
         public List<string> ArrivalState { get; set; }
@@ -52,7 +52,7 @@ namespace Rule.WebAPI.Model.DTO
         public int MachSpeed { get; set; }
     }
 
-    public class AircraftRequestModel: IRuleRequest
+    public class AircraftRequestModel
     {
         public List<string> ICAOAerodromeReferenceCode { get; set; }
         public List<string> AirworthinessCertificateType { get; set; }
