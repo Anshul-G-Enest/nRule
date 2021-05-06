@@ -17,7 +17,10 @@ namespace Rule.WebAPI.Model.DTO
 
     public class FilterOperationResponse : FilterBase { }
 
-    public class EntityTypeResponse : FilterBase { }
+    public class EntityTypeResponse : FilterBase 
+    {
+        public List<string> Fields { get; set; }
+    }
 
     public class NRuleResponse : FilterBase 
     {

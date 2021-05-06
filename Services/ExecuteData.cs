@@ -75,7 +75,7 @@ namespace Rule.WebAPI.Services
 
         public async Task<IEnumerable<EntityTypeResponse>> EntityTypes()
         {
-            return await _mapper.ProjectTo<EntityTypeResponse>(_ruleDbContext.EntityTypes).ToListAsync();
+            return _mapper.Map<IEnumerable<EntityTypeResponse>>(await _ruleDbContext.EntityTypes.ToListAsync());
         }
 
         public List<string> GetFields(int entityId)
@@ -128,11 +128,11 @@ namespace Rule.WebAPI.Services
             return people;
         }
 
-        private bool ExecuteRuleForDynamicJson(ISession session, object jsonData)
+        private bool ExecuteRuleForDynamicJson(ISession session, string jsonData)
         {
-           // dynamic deserializeJson = JsonConvert.DeserializeObject<ExpandoObject>(jsonData, new ExpandoObjectConverter());
+            var deserializeJson = JsonConvert.DeserializeObject<PersonRequestModel>(jsonData);
 
-            session.Insert(jsonData);
+            session.Insert(new ExecuteRuleRequestModel() { Person = deserializeJson });
 
             var isPassedOrNot = session.Fire();
             return false;

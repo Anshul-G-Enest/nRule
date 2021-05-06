@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Rule.WebAPI.Model;
 using Rule.WebAPI.Model.DTO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Rule.WebAPI.Infrastructure.Mapping
 {
@@ -25,7 +28,30 @@ namespace Rule.WebAPI.Infrastructure.Mapping
 
             CreateMap<StatementConnector, FilterStatementConnectorResponse>();
 
-            CreateMap<EntityType, EntityTypeResponse>().ReverseMap();
+            CreateMap<EntityType, EntityTypeResponse>()
+                .AfterMap((s,d)=> {
+                    var enumType = (EntityTypeEnum)Enum.ToObject(typeof(EntityTypeEnum), s.Id);
+                    var properties = new List<string>();
+                    switch (enumType)
+                    {
+                        case EntityTypeEnum.Aircraft:
+                            properties = typeof(AircraftRequestModel).GetProperties().Select(f => f.Name).ToList();
+                            break;
+                        case EntityTypeEnum.Airport:
+                            properties = typeof(AirportRequestModel).GetProperties().Select(f => f.Name).ToList();
+                            break;
+                        case EntityTypeEnum.Country:
+                            properties = typeof(CountryRequestModel).GetProperties().Select(f => f.Name).ToList();
+                            break;
+                        case EntityTypeEnum.Person:
+                            properties = typeof(PersonRequestModel).GetProperties().Select(f => f.Name).ToList();
+                            break;
+                        case EntityTypeEnum.Trips:
+                            properties = typeof(TripRequestModel).GetProperties().Select(f => f.Name).ToList();
+                            break;
+                    }
+                    d.Fields = properties;
+                });
 
             CreateMap<NRule, NRuleResponse>()
                 .ForMember(nr => nr.Rules, src => src.MapFrom(x => x.RuleEngines));

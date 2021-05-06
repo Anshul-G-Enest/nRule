@@ -6,7 +6,7 @@ namespace Rule.WebAPI.Model.DTO
 {
     public class RuleEngineRequestModel
     {
-        public object JsonData { get; set; }
+        public string JsonData { get; set; }
         public int RuleId { get; set; }
         public string RuleName { get; set; }
         public List<RuleEngineEntity> Rules { get; set; }
