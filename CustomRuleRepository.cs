@@ -15,7 +15,6 @@ namespace Rule.WebAPI
         readonly MethodInfo stringContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
         readonly MethodInfo stringStartsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
         readonly MethodInfo stringEndsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
-        readonly MethodInfo stringInMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
         public CustomRuleRepository()
         {
@@ -45,14 +44,11 @@ namespace Rule.WebAPI
             var andGroup = orGroup.Group(GroupType.And);
             PatternBuilder modelPattern = andGroup.Pattern(typeof(T), "x");
             var modelParameter = modelPattern.Declaration.ToParameterExpression();
-            int i = 1;
             foreach (var item in ruleEngineRequestModel.Rules)
             {
                 IDictionary<string, object> dictionary = item.EntityName; 
                 var entityName = dictionary["PropertyName"];
-
                 var member = Expression.Property(modelParameter, entityName.ToString());
-                i++;
                 Expression condition = null;
                 switch (item.FilterOperation)
                 {
