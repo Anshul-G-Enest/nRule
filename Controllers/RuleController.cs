@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rule.WebAPI.Model;
 using Rule.WebAPI.Model.DTO;
 using Rule.WebAPI.Services.Interface;
 using System.Collections.Generic;
@@ -65,18 +66,6 @@ namespace Rule.WebAPI.Controllers
                 return Ok(operations);
 
             return NotFound();
-        }
-
-        [HttpPost("ExecuteRule")]
-        public async Task<IActionResult> ExecuteRule(List<RuleEngineEntity> ruleEngineEntities)
-        {
-            return Ok(await _ruleData.Execute(ruleEngineEntities));
-        }
-
-        [HttpGet("ExecuteRule/{ruleId}")]
-        public async Task<IActionResult> ExecuteRule(int ruleId)
-        {
-            return Ok(await _ruleData.ExecuteByRuleId(ruleId));
         }
     }
 }

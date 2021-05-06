@@ -15,12 +15,10 @@ namespace Rule.WebAPI.Services
 {
     public class PersonData : IPersonData
     {
-        private CustomRuleRepository _customRuleRepository;
         private readonly RuleDbContext _ruleDbContext;
         private readonly IMapper _mapper;
         public PersonData(RuleDbContext ruleDbContext, IMapper mapper)
         {
-            _customRuleRepository = new CustomRuleRepository();
             _ruleDbContext = ruleDbContext;
             _mapper = mapper;
         }
@@ -28,33 +26,6 @@ namespace Rule.WebAPI.Services
         public async Task<bool> SavePerson(PersonRequestModel personRequestModel)
         {
             return await AddPerson(personRequestModel);
-
-            //var rules = _mapper.Map<IEnumerable<RuleEngineEntity>>(await _ruleDbContext.Rules.Where(x => personRuleRequestModel.RuleIds.Contains(x.Id)).ToListAsync());
-
-            //if (!rules.Any())
-            //    return false;
-
-            //_customRuleRepository.LoadRules<PersonRuleRequestModel>(new RuleEngineRequestModel()
-            //{
-            //    RuleName = "FirstRule",
-            //    Rules = rules.ToList()
-            //});
-
-            ////Compile rules
-            //var factory = _customRuleRepository.Compile();
-
-            ////Create a working session
-            //var session = factory.CreateSession();
-
-            //session.Insert(personRuleRequestModel);
-
-            //var IspassedorNot = session.Fire();
-
-            //if(IspassedorNot > 0)
-            //    await AddPerson(personRuleRequestModel.Person);
-
-            //return IspassedorNot > 0;
-
         }
 
         private async Task<bool> AddPerson(PersonRequestModel personRequestModel)
@@ -85,9 +56,5 @@ namespace Rule.WebAPI.Services
             return await _mapper.ProjectTo<PersonRequestModel>(_ruleDbContext.Persons).ToListAsync();
         }
 
-        public List<string> GetFields()
-        {
-            return typeof(Person).GetProperties().Select(f => f.Name).ToList();
-        }
     }
 }

@@ -55,15 +55,5 @@ namespace Rule.WebAPI.Controllers
                return Ok(persons);
             return NotFound();
         }
-
-        [HttpGet("Fields")]
-        public IActionResult GetFields()
-        {
-            var person = _personData.GetFields();
-            if (person.Any())
-                return Ok(person);
-
-            return NotFound("No Fields present.");
-        }
     }
 }

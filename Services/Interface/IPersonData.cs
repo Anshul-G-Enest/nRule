@@ -9,7 +9,6 @@ namespace Rule.WebAPI.Services.Interface
         Task<bool> SavePerson(PersonRequestModel personRuleRequestModel);
         Task<PersonRequestModel> GetPerson(int personId);
         Task<IEnumerable<PersonRequestModel>> GetPersons();
-        List<string> GetFields();
         Task<bool> UpdatePerson(PersonRequestModel personRequestModel);
     }
 }

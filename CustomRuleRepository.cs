@@ -1,8 +1,8 @@
 ﻿using NRules.RuleModel;
 using NRules.RuleModel.Builders;
-using Rule.WebAPI.Model;
 using Rule.WebAPI.Model.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -15,6 +15,7 @@ namespace Rule.WebAPI
         readonly MethodInfo stringContainsMethod = typeof(string).GetMethod("Contains", new[] { typeof(string) });
         readonly MethodInfo stringStartsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
         readonly MethodInfo stringEndsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
+        readonly MethodInfo stringInMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
 
         public CustomRuleRepository()
         {
@@ -38,16 +39,20 @@ namespace Rule.WebAPI
         private List<IRuleDefinition> BuildRule<T>(RuleEngineRequestModel ruleEngineRequestModel)
         {
             var builder = new RuleBuilder();
-            builder.Name(ruleEngineRequestModel.RuleName);
+            builder.Name("default");
             var orGroup = builder.LeftHandSide().Group(GroupType.Or);
             Expression expression = null;
             var andGroup = orGroup.Group(GroupType.And);
-            PatternBuilder modelPattern = andGroup.Pattern(typeof(T), nameof(Person));
+            PatternBuilder modelPattern = andGroup.Pattern(typeof(T), "x");
             var modelParameter = modelPattern.Declaration.ToParameterExpression();
-
-            var member = Expression.Property(modelParameter, nameof(PersonRuleRequestModel.Person));
+            int i = 1;
             foreach (var item in ruleEngineRequestModel.Rules)
             {
+                IDictionary<string, object> dictionary = item.EntityName; 
+                var entityName = dictionary["PropertyName"];
+
+                var member = Expression.Property(modelParameter, entityName.ToString());
+                i++;
                 Expression condition = null;
                 switch (item.FilterOperation)
                 {
@@ -112,6 +117,16 @@ namespace Rule.WebAPI
                         }
                         condition = CombineExpressions(leftBinaryExpression, rightBinaryExpression, FilterStatementConnector.And);
                         break;
+                    case FilterOperation.In:
+                        //var listType = typeof(List<>);
+                        //var constructedListType = listType.MakeGenericType(typeof(object).GetElementType());
+                        //var objValue = Activator.CreateInstance(constructedListType, item.Value);
+
+                        var values = new List<string>();
+                        values.AddRange(item.Value.ToString().ToLower().Split(','));
+                        var constantInExpr = Expression.Constant(values);
+                        condition = Contains(Expression.Property(member, item.PropertyName), constantInExpr);
+                        break;
 
                 }
                 expression = expression == null ? condition : CombineExpressions(expression, condition, item.FilterConnector);
@@ -130,6 +145,19 @@ namespace Rule.WebAPI
         private Expression CombineExpressions(Expression expr1, Expression expr2, FilterStatementConnector connector)
         {
             return connector == FilterStatementConnector.And ? Expression.AndAlso(expr1, expr2) : Expression.OrElse(expr1, expr2);
+        }
+
+        private Expression Contains(Expression member, Expression expression)
+        {
+            MethodCallExpression contains = null;
+            if (expression is ConstantExpression constant && constant.Value is IList && constant.Value.GetType().IsGenericType)
+            {
+                var type = constant.Value.GetType();
+                var containsInfo = type.GetMethod("Contains", new[] { type.GetGenericArguments()[0] });
+                contains = Expression.Call(constant, containsInfo, member);
+            }
+
+            return contains ?? Expression.Call(member, stringContainsMethod, expression); ;
         }
     }
 }

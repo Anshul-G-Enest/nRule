@@ -23,5 +23,8 @@ namespace Rule.WebAPI.Model
         public int? NRuleId { get; set; }
         [ForeignKey("NRuleId")]
         public virtual NRule NRule { get; set; }
+        public int EntityTypeId { get; set; }
+        [ForeignKey("EntityTypeId")]
+        public virtual EntityType EntityType { get; set; }
     }
 }

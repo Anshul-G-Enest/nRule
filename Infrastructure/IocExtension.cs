@@ -16,6 +16,7 @@ namespace Rule.WebAPI.Infrastructure
 
             services.AddScoped<IRuleData, RuleData>();
             services.AddScoped<IPersonData, PersonData>();
+            services.AddScoped<IExecuteData, ExecuteData>();
             return services;
         }
     }

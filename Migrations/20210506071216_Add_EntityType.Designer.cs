@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rule.WebAPI.Context;
 
 namespace Rule.WebAPI.Migrations
 {
     [DbContext(typeof(RuleDbContext))]
-    partial class RuleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210506071216_Add_EntityType")]
+    partial class Add_EntityType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -38,14 +38,5 @@ namespace Rule.WebAPI.Services.Interface
         /// <param name="ruleEngineRequestModel"></param>
         /// <returns></returns>
         Task<bool> UpdateRule(RuleEngineRequestModel ruleEngineRequestModel);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ruleEngineEntities"></param>
-        /// <returns></returns>
-        Task<IEnumerable<PersonRequestModel>> Execute(List<RuleEngineEntity> ruleEngineEntities);
-
-        Task<IEnumerable<PersonRequestModel>> ExecuteByRuleId(int ruleId);
     }
 }

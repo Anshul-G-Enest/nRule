@@ -10,11 +10,14 @@ namespace Rule.WebAPI.Model.DTO
         public FilterOperationResponse FilterOperation { get; set; }
         public object Value { get; set; }
         public object SecondValue { get; set; }
+        public EntityTypeResponse EntityType { get; set; }
     }
 
     public class FilterStatementConnectorResponse : FilterBase { }
 
     public class FilterOperationResponse : FilterBase { }
+
+    public class EntityTypeResponse : FilterBase { }
 
     public class NRuleResponse : FilterBase 
     {

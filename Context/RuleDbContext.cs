@@ -24,6 +24,7 @@ namespace Rule.WebAPI.Context
             });
 
             modelBuilder.Entity<Operation>().HasData(GetOperation());
+            modelBuilder.Entity<EntityType>().HasData(GetEntityTypes());
         }
 
         private List<Operation> GetOperation()
@@ -35,11 +36,23 @@ namespace Rule.WebAPI.Context
             }
             return operations;
         }
+
+        private List<EntityType> GetEntityTypes()
+        {
+            List<EntityType> entityTypes = new List<EntityType>();
+            foreach (EntityTypeEnum entityType in Enum.GetValues(typeof(EntityTypeEnum)))
+            {
+                entityTypes.Add(new EntityType { Id = (int)entityType, Name = entityType.ToString() });
+            }
+            return entityTypes;
+        }
+
         public DbSet<NRule> NRules { get; set; }
         public DbSet<RuleEngine> RuleEngines { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<StatementConnector> StatementConnectors { get; set; }
         public DbSet<Operation> Operations { get; set; }
+        public DbSet<EntityType> EntityTypes { get; set; }
 
     }
 }
