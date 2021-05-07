@@ -128,29 +128,28 @@ namespace Rule.WebAPI.Services
 
         private bool ExecuteRuleForDynamicJson(ISession session, RuleEngineRequestModel ruleEngineRequestModel)
         {
-            //List<ExecuteRuleRequestModel> executeRuleRequests = new List<ExecuteRuleRequestModel>();
-            ExecuteRuleRequestModel ruleModel = new ExecuteRuleRequestModel();
-            foreach (var rule in ruleEngineRequestModel.Rules)
-            {
-                switch (rule.EntityType)
-                {
-                    case EntityTypeEnum.Country:
-                        ruleModel.Country = JsonConvert.DeserializeObject<CountryRequestModel>(ruleEngineRequestModel.JsonData);
-                        break;
-                    case EntityTypeEnum.Aircraft:
-                        ruleModel.Aircraft = JsonConvert.DeserializeObject<AircraftRequestModel>(ruleEngineRequestModel.JsonData);
-                        break;
-                    case EntityTypeEnum.Airport:
-                        ruleModel.Airport = JsonConvert.DeserializeObject<AirportRequestModel>(ruleEngineRequestModel.JsonData);
-                        break;
-                    case EntityTypeEnum.Trips:
-                        ruleModel.Trip = JsonConvert.DeserializeObject<TripRequestModel>(ruleEngineRequestModel.JsonData);
-                        break;
-                    case EntityTypeEnum.Person:
-                        ruleModel.Person = JsonConvert.DeserializeObject<PersonRequestModel>(ruleEngineRequestModel.JsonData);
-                        break;
-                }
-            }
+            var ruleModel = JsonConvert.DeserializeObject<ExecuteRuleRequestModel>(ruleEngineRequestModel.JsonData);
+            //foreach (var rule in ruleEngineRequestModel.Rules)
+            //{
+            //    switch (rule.EntityType)
+            //    {
+            //        case EntityTypeEnum.Country:
+            //            ruleModel = JsonConvert.DeserializeObject<ExecuteRuleRequestModel>(ruleEngineRequestModel.JsonData);
+            //            break;
+            //        case EntityTypeEnum.Aircraft:
+            //            ruleModel.Aircraft = JsonConvert.DeserializeObject<AircraftRequestModel>(ruleEngineRequestModel.JsonData);
+            //            break;
+            //        case EntityTypeEnum.Airport:
+            //            ruleModel.Airport = JsonConvert.DeserializeObject<AirportRequestModel>(ruleEngineRequestModel.JsonData);
+            //            break;
+            //        case EntityTypeEnum.Trips:
+            //            ruleModel.Trip = JsonConvert.DeserializeObject<TripRequestModel>(ruleEngineRequestModel.JsonData);
+            //            break;
+            //        case EntityTypeEnum.Person:
+            //            ruleModel = JsonConvert.DeserializeObject<ExecuteRuleRequestModel>(ruleEngineRequestModel.JsonData);
+            //            break;
+            //    }
+            //}
 
             session.Insert(ruleModel);
             return session.Fire() == 1;
