@@ -1,9 +1,11 @@
-﻿using NRules.RuleModel;
+﻿using Newtonsoft.Json;
+using NRules.RuleModel;
 using NRules.RuleModel.Builders;
 using Rule.WebAPI.Model.DTO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -114,12 +116,9 @@ namespace Rule.WebAPI
                         condition = CombineExpressions(leftBinaryExpression, rightBinaryExpression, FilterStatementConnector.And);
                         break;
                     case FilterOperation.In:
-                        //var listType = typeof(List<>);
-                        //var constructedListType = listType.MakeGenericType(typeof(object).GetElementType());
-                        //var objValue = Activator.CreateInstance(constructedListType, item.Value);
-
                         var values = new List<string>();
-                        values.AddRange(item.Value.ToString().ToLower().Split(','));
+                        var obj = JsonConvert.DeserializeObject<string[]>(item.Value.ToString());
+                        values.AddRange(obj);
                         var constantInExpr = Expression.Constant(values);
                         condition = Contains(Expression.Property(member, item.PropertyName), constantInExpr);
                         break;

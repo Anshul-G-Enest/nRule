@@ -20,7 +20,6 @@ namespace Rule.WebAPI.Model.DTO
         public AircraftRequestModel Aircraft { get; set; }
     }
 
-
     public class PersonRequestModel 
     {
         public int Id { get; set; }

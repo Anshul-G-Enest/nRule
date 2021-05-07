@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using NRules;
 using Rule.WebAPI.Context;
 using Rule.WebAPI.Model.DTO;
 using Rule.WebAPI.Services.Interface;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -131,9 +129,10 @@ namespace Rule.WebAPI.Services
         private bool ExecuteRuleForDynamicJson(ISession session, RuleEngineRequestModel ruleEngineRequestModel)
         {
             List<ExecuteRuleRequestModel> executeRuleRequests = new List<ExecuteRuleRequestModel>();
-            var ruleModel = new ExecuteRuleRequestModel();
+            ExecuteRuleRequestModel ruleModel = null;
             foreach (var rule in ruleEngineRequestModel.Rules)
             {
+                ruleModel = new ExecuteRuleRequestModel();
                 switch (rule.EntityType)
                 {
                     case EntityTypeEnum.Country:
