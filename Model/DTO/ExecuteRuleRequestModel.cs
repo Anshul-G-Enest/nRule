@@ -24,7 +24,12 @@ namespace Rule.WebAPI.Model.DTO
         public int Id { get; set; }
         public DateTime BirthDate { get; set; }
         public int Age { get; set; }
-        public string Name { get; set; }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value.ToLower(); }
+        }
         public bool IsMale { get; set; }
     }
 
@@ -38,7 +43,12 @@ namespace Rule.WebAPI.Model.DTO
     {
         public int Id { get; set; }
         public List<string> EuCountry { get; set; }
-        public string Name { get; set; }
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value.ToLower(); }
+        }
     }
 
     public class TripRequestModel
