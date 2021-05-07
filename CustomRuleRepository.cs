@@ -117,7 +117,7 @@ namespace Rule.WebAPI
                         break;
                     case FilterOperation.In:
                         var values = new List<string>();
-                        var obj = JsonConvert.DeserializeObject<string[]>(item.Value.ToString());
+                        var obj = JsonConvert.DeserializeObject<string[]>(item.Value.ToString().ToLower());
                         values.AddRange(obj);
                         var constantInExpr = Expression.Constant(values);
                         condition = Contains(Expression.Property(member, item.PropertyName), constantInExpr);
