@@ -128,11 +128,10 @@ namespace Rule.WebAPI.Services
 
         private bool ExecuteRuleForDynamicJson(ISession session, RuleEngineRequestModel ruleEngineRequestModel)
         {
-            List<ExecuteRuleRequestModel> executeRuleRequests = new List<ExecuteRuleRequestModel>();
-            ExecuteRuleRequestModel ruleModel = null;
+            //List<ExecuteRuleRequestModel> executeRuleRequests = new List<ExecuteRuleRequestModel>();
+            ExecuteRuleRequestModel ruleModel = new ExecuteRuleRequestModel();
             foreach (var rule in ruleEngineRequestModel.Rules)
             {
-                ruleModel = new ExecuteRuleRequestModel();
                 switch (rule.EntityType)
                 {
                     case EntityTypeEnum.Country:
@@ -151,10 +150,9 @@ namespace Rule.WebAPI.Services
                         ruleModel.Person = JsonConvert.DeserializeObject<PersonRequestModel>(ruleEngineRequestModel.JsonData);
                         break;
                 }
-                executeRuleRequests.Add(ruleModel);
             }
 
-            session.InsertAll(executeRuleRequests);
+            session.Insert(ruleModel);
             return session.Fire() == 1;
         }
 
